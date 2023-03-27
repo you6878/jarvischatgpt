@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">JARVISChatGPT</string>
+    <color name="text_color_text_2">#9ca0a5</color>
 </resources>

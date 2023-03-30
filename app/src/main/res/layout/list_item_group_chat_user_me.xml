@@ -1,69 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:clickable="true"
-    android:paddingRight="8dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <View
-        android:id="@+id/view_group_chat_padding"
+    <data>
+
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="12dp"
-        android:layout_alignParentTop="true"/>
-
-    <TextView
-        android:id="@+id/text_group_chat_date"
-        android:text="February 22nd"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/text_color_text_2"
-        android:layout_marginTop="22dp"
-        android:gravity="center"
-        android:textSize="12dp"/>
+        android:clickable="true"
+        android:paddingRight="8dp">
 
-    <LinearLayout
-        android:layout_toLeftOf="@+id/text_group_chat_time"
-        android:id="@+id/card_group_chat_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_group_chat_date">
-        <LinearLayout
-            android:id="@+id/group_chat_message_container"
+        <View
+            android:id="@+id/view_group_chat_padding"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:layout_alignParentTop="true" />
+
+        <TextView
+            android:id="@+id/text_group_chat_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="22dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="February 22nd"
+            android:textColor="@color/text_color_text_2"
+            android:textSize="12dp" />
 
-            <TextView
-                android:layout_marginRight="8dp"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/zone_send_bg"
-                android:id="@+id/text_group_chat_message"
-                android:text="message"
+        <LinearLayout
+            android:id="@+id/card_group_chat_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_group_chat_date"
+            android:layout_toLeftOf="@+id/text_group_chat_time">
+
+            <LinearLayout
+                android:id="@+id/group_chat_message_container"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textColor="@color/black"
-                android:maxWidth="260dp"
-                />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/text_group_chat_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/zone_send_bg"
+                    android:maxWidth="260dp"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp"
+                    android:text="message"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
         </LinearLayout>
 
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/text_group_chat_time"
-        android:textSize="10dp"
-        android:text="21:27"
-        android:textColor="#8e8e8e"
-        android:layout_alignParentRight="true"
-        android:layout_alignBottom="@id/card_group_chat_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        />
-
-</RelativeLayout>
+        <TextView
+            android:id="@+id/text_group_chat_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/card_group_chat_message"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="4dp"
+            android:text="21:27"
+            android:textColor="#8e8e8e"
+            android:textSize="10dp" />
+    </RelativeLayout>
+</layout>

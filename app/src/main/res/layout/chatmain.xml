@@ -2,82 +2,68 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-    </data>
-
     <RelativeLayout
         android:id="@+id/layout_group_chat_root"
-        android:background="@drawable/tonal_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/tonal_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-
         <LinearLayout
+            android:id="@+id/layout_group_chat_chatbox"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="24dp"
             android:background="@drawable/people_input_bg"
-            android:id="@+id/layout_group_chat_chatbox"
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:minHeight="48dp">
+            android:minHeight="48dp"
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/button_group_chat_upload"
-                app:srcCompat="@drawable/zone_camera"
-                android:background="?attr/selectableItemBackground"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:contentDescription="Upload file" />
-
-            <EditText
-                android:textColor="@color/black"
-                android:id="@+id/edittext_group_chat_message"
-                android:hint="메세지를 입력해주세요."
-                android:background="@android:color/transparent"
-                android:textSize="14dp"
-                android:layout_gravity="center"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:maxLines="1" />
-
-            <ImageButton
-                android:visibility="gone"
-                android:layout_marginRight="12dp"
-                android:id="@+id/button_group_chat_send"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="bottom"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:gravity="center"
-                app:srcCompat="@drawable/send_message"
-                android:textColor="@drawable/selector_btn_send"
-                android:textSize="14dp" />
-
-            <ImageButton
-                android:id="@+id/button_group_chat_emotion"
-                app:srcCompat="@drawable/zone_emoticon"
-                android:background="?attr/selectableItemBackground"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:contentDescription="Upload file" />
-
-            <ImageButton
-                android:id="@+id/button_group_chat_mic"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:background="?attr/selectableItemBackground"
                 android:contentDescription="Upload file"
-                app:srcCompat="@drawable/zone_mic" />
+                app:srcCompat="@drawable/zone_camera" />
+
+            <EditText
+                android:id="@+id/edittext_group_chat_message"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="메세지를 입력해주세요."
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
+
+            <ImageButton
+                android:id="@+id/button_group_chat_send"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_marginRight="12dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:gravity="center"
+                android:textColor="@drawable/selector_btn_send"
+                android:textSize="14dp"
+                android:visibility="gone"
+                app:srcCompat="@drawable/send_message" />
+
+            <ImageButton
+                android:id="@+id/button_group_chat_emotion"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="Upload file"
+                app:srcCompat="@drawable/send_message" />
         </LinearLayout>
 
         <!--<LinearLayout
@@ -122,11 +108,10 @@
                 android:layout_gravity="bottom" />
         </LinearLayout>-->
 
-
         <LinearLayout
-            android:layout_above="@id/layout_group_chat_chatbox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_above="@id/layout_group_chat_chatbox"
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -136,9 +121,8 @@
                 android:layout_weight="1"
                 android:clipToPadding="false"
                 android:paddingBottom="4dp"
-                android:scrollbars="vertical">
-
-            </androidx.recyclerview.widget.RecyclerView>
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <LinearLayout
                 android:id="@+id/layout_group_chat_current_event"
@@ -150,15 +134,12 @@
 
                 <TextView
                     android:id="@+id/text_group_chat_current_event"
-                    android:text="Terry and Harry are typing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical" />
-
+                    android:layout_gravity="center_vertical"
+                    android:text="Terry and Harry are typing" />
             </LinearLayout>
-
         </LinearLayout>
-
     </RelativeLayout>
 </layout>
 

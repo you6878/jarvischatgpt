@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "477860108542",
+    "project_id": "hackathon-857c0",
+    "storage_bucket": "hackathon-857c0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477860108542:android:39664d60c9c897b7a32daf",
+        "android_client_info": {
+          "package_name": "com.howlab.jarvischatgpt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "477860108542-mlr9vee4pgsdddhb4fsikb77ouo257u9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHcUGFgToENnHusRo0ys9YvHG9iR6TAgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "477860108542-mlr9vee4pgsdddhb4fsikb77ouo257u9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

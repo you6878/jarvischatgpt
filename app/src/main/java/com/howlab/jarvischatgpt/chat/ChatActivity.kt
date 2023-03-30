@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import com.howlab.jarvischatgpt.databinding.ChatmainBinding
 import com.howlab.jarvischatgpt.network.ChatRequest
 import com.howlab.jarvischatgpt.network.CompletionResponse
@@ -14,7 +15,6 @@ import com.howlab.jarvischatgpt.network.OpenAiApi
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalDateTime
 
 class ChatActivity : AppCompatActivity() {
 
@@ -33,6 +33,16 @@ class ChatActivity : AppCompatActivity() {
         api = OpenAiApi.getInstance()
 
         binding.recyclerGroupChat.adapter = chatAdapter
+        binding.recyclerGroupChat.itemAnimator = null
+
+        chatAdapter.registerAdapterDataObserver(
+            object : RecyclerView.AdapterDataObserver() {
+                override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                    super.onItemRangeInserted(positionStart, itemCount)
+                    binding.recyclerGroupChat.scrollToPosition(chats.size - 1)
+                }
+            }
+        )
 
         binding.buttonGroupChatEmotion.setOnClickListener {
             if (binding.edittextGroupChatMessage.text.isEmpty()) {
@@ -42,6 +52,7 @@ class ChatActivity : AppCompatActivity() {
             addChat(binding.edittextGroupChatMessage.text.toString())
         }
     }
+
 
     private fun addChat(message: String) {
         chats.add(ChatMessage.user(message))
@@ -63,7 +74,7 @@ class ChatActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<CompletionResponse>, t: Throwable) {
-                Log.e("TESTEST", "fail $t" , t)
+                Log.e("TESTEST", "fail $t", t)
             }
         })
     }

@@ -2,9 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp">
@@ -46,10 +44,10 @@
 
 
         <LinearLayout
-            android:layout_below="@+id/text_group_chat_date"
             android:id="@+id/group_chat_message_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/text_group_chat_date"
             android:orientation="vertical">
 
             <TextView
@@ -85,14 +83,13 @@
 
         <TextView
             android:id="@+id/text_group_chat_time"
-            android:layout_marginRight="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/group_chat_message_container"
-            android:layout_alignParentRight="true"
+            android:layout_alignEnd="@id/text_group_chat_date"
+            android:layout_gravity="bottom"
             android:layout_marginBottom="4dp"
             android:text="21:27"
             android:textColor="#8e8e8e"
             android:textSize="10dp" />
-    </RelativeLayout>
+    </LinearLayout>
 </layout>

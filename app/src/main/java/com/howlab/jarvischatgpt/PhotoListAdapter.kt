@@ -17,6 +17,11 @@ class PhotoListAdapter: RecyclerView.Adapter<PhotoListAdapter.PhotoViewHolder>()
         notifyDataSetChanged()
     }
 
+    fun addImage(uri: Uri) {
+        items.add(uri)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         PhotoViewHolder(
             ItemPhotoBinding.inflate(

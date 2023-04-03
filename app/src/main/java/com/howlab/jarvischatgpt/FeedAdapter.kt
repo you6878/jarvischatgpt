@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.howlab.jarvischatgpt.databinding.ItemProductBinding
 import com.howlab.jarvischatgpt.network.Product
+import java.text.NumberFormat
 
 class FeedAdapter(
     private val onClick: (Product) -> Unit
@@ -44,7 +45,7 @@ class FeedAdapter(
 
             binding.productTitleText.text = product.title
             binding.locationTextView.text = product.location
-            binding.productTitleText.text = product.price
+            binding.productPriceTextView.text = product.price
 
             binding.root.setOnClickListener {
                 onClick.invoke(product)

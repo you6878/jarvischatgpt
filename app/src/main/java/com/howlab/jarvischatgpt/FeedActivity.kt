@@ -1,5 +1,6 @@
 package com.howlab.jarvischatgpt
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.auth.ktx.auth
@@ -18,6 +19,8 @@ class FeedActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-
+        binding.fab.setOnClickListener {
+            startActivity(Intent(this, ProductRegisterActivity::class.java))
+        }
     }
 }

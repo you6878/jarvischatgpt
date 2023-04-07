@@ -80,7 +80,15 @@ class StationActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             db.stationDao().getStationWithSubways().collectLatest { list ->
-                stations.update { list.toStations() }
+                stations.update {
+                    list.toStations().mapNotNull {
+                        if (it.connectedSubways.contains(Subway.LINE_2)) {
+                            return@mapNotNull it
+                        }
+
+                        null
+                    }
+                }
             }
         }
 

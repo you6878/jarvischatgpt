@@ -129,14 +129,13 @@
                     app:cardUseCompatPadding="true"/>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/mid"
+                    android:id="@+id/recommend_place_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="8dp"
                     app:cardUseCompatPadding="true">
 
                     <TextView
-                        android:id="@+id/recommend_place_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="8dp"
@@ -145,14 +144,13 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/near"
+                    android:id="@+id/recommend_near_station"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="8dp"
                     app:cardUseCompatPadding="true">
 
                     <TextView
-                        android:id="@+id/recommend_near_station"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="8dp"

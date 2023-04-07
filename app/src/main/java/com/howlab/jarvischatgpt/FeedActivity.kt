@@ -20,6 +20,7 @@ class FeedActivity : AppCompatActivity() {
     private val feedAdapter = FeedAdapter(onClick = {
         startActivity(Intent(baseContext, UserChatActivity::class.java).apply {
             putExtra("KEY", it.location)
+            putExtra("UID", it.uid)
         })
     })
 

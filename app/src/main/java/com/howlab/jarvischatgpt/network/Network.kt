@@ -1,5 +1,6 @@
 package com.howlab.jarvischatgpt.network
 
+import com.howlab.jarvischatgpt.chat.ChatRes
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -13,6 +14,10 @@ data class CompletionResponse(
     val choices: List<Choice>,
     val message: String,
     val result: String
+)
+
+data class ChatResponse(
+    val content: String
 )
 
 data class Choice(val text: String)
@@ -34,7 +39,15 @@ data class ChatRequest(
 interface OpenAiApi {
 
     @Headers("Authorization: Bearer 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")
-    @POST("api/generate")
+    @POST("api/generate_chat")
+    fun getCompletionNearStation(@Body requestBody: ChatRequest): Call<ChatRes>
+
+    @Headers("Authorization: Bearer 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")
+    @POST("api/generate_1")
+    fun getCompletionPlaceTime(@Body requestBody: ChatRequest): Call<CompletionResponse>
+
+    @Headers("Authorization: Bearer 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")
+    @POST("api/generate_2")
     fun getCompletion2(@Body requestBody: ChatRequest): Call<CompletionResponse>
 
     @Headers("Authorization: Bearer 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")
@@ -48,7 +61,7 @@ interface OpenAiApi {
     companion object {
 
         private var instance: OpenAiApi? = null
-        private const val TIMEOUT_TIME = 20L
+        private const val TIMEOUT_TIME = 40L
 
         fun getInstance(): OpenAiApi {
             if (instance == null) {

@@ -2,23 +2,19 @@ package com.howlab.jarvischatgpt.member
 
 import android.content.Intent
 import android.graphics.Rect
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
-import com.google.firebase.auth.FirebaseUser
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.howlab.jarvischatgpt.FeedActivity
 import com.howlab.jarvischatgpt.RegisterActivity
 import com.howlab.jarvischatgpt.StationActivity
 import com.howlab.jarvischatgpt.databinding.ActivityLoginBinding
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 class LoginActivity : AppCompatActivity() {
 
@@ -61,7 +57,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun signIn() {
-        val email = binding.emailEditText.text.toString()
+        val email = binding.emailEditText.text.toString().trim()
         val password = binding.passwordEditText.text.toString()
 
         auth.signInWithEmailAndPassword(email, password)
@@ -69,6 +65,7 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this, FeedActivity::class.java))
             }
             .addOnFailureListener {
+                Log.e("TEST", it.toString())
                 Toast.makeText(baseContext, "이메일 또는 비밀번호가 틀렸습니다.", Toast.LENGTH_SHORT).show()
             }
     }

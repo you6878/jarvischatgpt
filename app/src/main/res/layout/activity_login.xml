@@ -84,17 +84,17 @@
                 android:background="@drawable/background_ratio_16" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/loginButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/background_ratio_16"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="#ccff00"
             android:text="로그인"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintTop_toBottomOf="@id/nameLayout" />
 

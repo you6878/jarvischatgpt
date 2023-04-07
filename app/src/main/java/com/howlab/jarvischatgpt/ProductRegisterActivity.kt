@@ -121,7 +121,8 @@ class ProductRegisterActivity : AppCompatActivity() {
                             title = binding.nameText.text.toString(),
                             location = location,
                             thumbnailImage = images.firstOrNull().orEmpty(),
-                            price = binding.priceText.text.toString()
+                            price = binding.priceText.text.toString(),
+                            Firebase.auth.uid.orEmpty()
                         )
                     ).addOnSuccessListener {
                         finish()

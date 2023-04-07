@@ -12,6 +12,8 @@ fun Station.toStationEntity() =
     )
 
 
-fun List<StationWithSubwaysEntity>.toStations() = map { it.toStation() }
+fun List<StationWithSubwaysEntity>.toStations() = map {
+    it.toStation()
+}
 
 fun List<SubwayEntity>.toSubways(): List<Subway> = map { Subway.findById(it.subwayId) }

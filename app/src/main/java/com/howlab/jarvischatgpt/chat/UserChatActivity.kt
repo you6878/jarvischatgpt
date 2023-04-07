@@ -1,11 +1,17 @@
 package com.howlab.jarvischatgpt.chat
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.howlab.jarvischatgpt.databinding.ActivityUserChatBinding
 import com.howlab.jarvischatgpt.network.ChatRequest
+import com.howlab.jarvischatgpt.network.ChatResponse
 import com.howlab.jarvischatgpt.network.CompletionResponse
 import com.howlab.jarvischatgpt.network.OpenAiApi
 import kotlinx.coroutines.delay
@@ -24,12 +30,56 @@ class UserChatActivity : AppCompatActivity() {
 
     private lateinit var api: OpenAiApi
 
-
     private val chats = mutableListOf<ChatMessage>()
+
+    var meDay = ""
+    var mePlace = ""
+
+    var otherDay = ""
+    var otherPlace = ""
+
+    private val firestore = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        val otherUid = intent.extras?.getString("UID")
+        otherUid?.let {
+            firestore.collection("USER")
+                .document(it)
+                .get()
+                .addOnSuccessListener {
+//                    it.getString("stationLine")?.let {
+//                        otherPlace = it
+//                    }
+
+                    it.getString("station")?.let {
+                        otherPlace += it
+                    }
+
+                    it.getString("tradeAt")?.let {
+                        otherDay = it
+                    }
+                }
+        }
+
+        firestore.collection("USER")
+            .document(Firebase.auth.uid.orEmpty())
+            .get()
+            .addOnSuccessListener {
+//                it.getString("stationLine")?.let {
+//                    mePlace = it
+//                }
+
+                it.getString("station")?.let {
+                    mePlace += it
+                }
+
+                it.getString("tradeAt")?.let {
+                    meDay = it
+                }
+            }
 
         api = OpenAiApi.getInstance()
 
@@ -54,17 +104,17 @@ class UserChatActivity : AppCompatActivity() {
         }
         binding.recommendNearStation.setOnClickListener {
             val station = "강남역"
-            val command = "${station} 출구에 가까이있는 카페좀 알려줘"
-
+            val command = "$mePlace 출구에 가까이있는 커피숍이랑 거리도 알려줘"
+            apiRequestNear(command)
         }
-        binding.recommendPlaceTime.setOnClickListener {
-            val meDay = "4월 7일, 4월9일"
-            val mePlace = "2호선 강남역"
-            var otherDay ="4월 9일, 4월 11일"
-            var otherPlace ="2호선 잠실역"
 
+        binding.recommendPlaceTime.setOnClickListener {
             //나는 4월 7일, 4월9일 상대방은 4월 9일 4월 11일 거래 만남가능한 공통된 날짜만 말해주고 공통되지 않는 날짜는 생략하고 2호선 강남역 2호선 잠실역 중간에 있는 지하철역을 알려주는데 여기서 만나야되는 이유를 100자 내외로 설명해줘
-            val command = "나는 ${meDay} 상대방은 ${otherDay} 거래 만남가능한 공통된 날짜만 말해주고 공통되지 않는 날짜는 생략하고 ${mePlace} ${otherPlace} 중간에 있는 지하철역을 알려주는데 여기서 만나야되는 이유를 100자 내외로 설명해줘"
+            val command =
+                "나는 $meDay 상대방은 $otherDay 거래 만남가능한 공통된 날짜만 말해주고 공통되지 않는 날짜는 생략하고 ${mePlace}이랑 $otherPlace 중간에 있는 지하철역을 알려주는데 여기서 만나야되는 이유를 100자 내외로 설명해줘"
+
+            val stationMent = "${mePlace}과 $otherPlace 중간지점 지하철역 알려줘"
+            apiRequestStation(stationMent)
         }
     }
 
@@ -95,25 +145,75 @@ class UserChatActivity : AppCompatActivity() {
         binding.edittextGroupChatMessage.text.clear()
     }
 
-    private fun apiRequest() {
-        api.getCompletion2(ChatRequest(binding.edittextGroupChatMessage.text.toString()))
-            .enqueue(object : Callback<CompletionResponse> {
+    private fun apiRequestStation(message: String) {
+        api.getCompletionNearStation(ChatRequest(message))
+            .enqueue(object : Callback<ChatRes> {
                 override fun onResponse(
-                    call: Call<CompletionResponse>,
-                    response: Response<CompletionResponse>
+                    call: Call<ChatRes>,
+                    response: Response<ChatRes>
                 ) {
                     if (response.isSuccessful) {
-                        chats.add(ChatMessage.ai(response.body()?.result.orEmpty()))
-                        chatAdapter.submitList(chats.toMutableList())
+                        val first = response.body()?.result?.content.orEmpty()
+
+                        val dayMent = "나는 $meDay 상대방은 $otherDay 거래 만남가능한 공통된 날짜만 말해줘"
+
+                        api.getCompletionNearStation(ChatRequest(dayMent))
+                            .enqueue(object : Callback<ChatRes> {
+                                override fun onResponse(
+                                    call: Call<ChatRes>,
+                                    response: Response<ChatRes>
+                                ) {
+                                    if (response.isSuccessful) {
+                                        val second = response.body()?.result?.content.orEmpty()
+                                        chats.add(ChatMessage.gpt("$first\n$second"))
+                                        chatAdapter.submitList(chats.toMutableList())
+                                    } else {
+                                        Toast.makeText(
+                                            baseContext,
+                                            "${response.errorBody()}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+
+                                override fun onFailure(call: Call<ChatRes>, t: Throwable) {
+                                    Toast.makeText(baseContext, "${t.message}", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
+                            })
                     } else {
-                        chats.add(ChatMessage.ai("실패했습니다."))
-                        chatAdapter.submitList(chats.toMutableList())
+                        Toast.makeText(baseContext, "${response.errorBody()}", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
 
-                override fun onFailure(call: Call<CompletionResponse>, t: Throwable) {
-                    chats.add(ChatMessage.ai("실패했습니다."))
-                    chatAdapter.submitList(chats.toMutableList())
+                override fun onFailure(call: Call<ChatRes>, t: Throwable) {
+                    Toast.makeText(baseContext, "${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
+    }
+
+    private fun apiRequestNear(message: String) {
+        api.getCompletionNearStation(ChatRequest(message))
+            .enqueue(object : Callback<ChatRes> {
+                override fun onResponse(
+                    call: Call<ChatRes>,
+                    response: Response<ChatRes>
+                ) {
+                    if (response.isSuccessful) {
+                        val first = response.body()?.result?.content.orEmpty()
+
+                        val second = response.body()?.result?.content.orEmpty()
+                        chats.add(ChatMessage.gpt("$first\n$second"))
+                        chatAdapter.submitList(chats.toMutableList())
+                    } else {
+                        Toast.makeText(baseContext, "${response.errorBody()}", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+
+                override fun onFailure(call: Call<ChatRes>, t: Throwable) {
+                    Toast.makeText(baseContext, "${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
     }

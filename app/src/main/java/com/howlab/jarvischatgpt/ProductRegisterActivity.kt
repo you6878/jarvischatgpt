@@ -12,6 +12,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.howlab.jarvischatgpt.chat.ChatActivity
+import com.howlab.jarvischatgpt.chat.ChatPriceActivity
 import com.howlab.jarvischatgpt.databinding.ActivityProductRegisterBinding
 import com.howlab.jarvischatgpt.network.Product
 import com.howlab.jarvischatgpt.network.StorageApi
@@ -38,11 +39,19 @@ class ProductRegisterActivity : AppCompatActivity() {
             photoListAdapter.addImage(galleryUri)
         }
 
-    private val priceLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        result.data?.extras?.getString("KEY_CHAT")?.let {
-            binding.descriptionText.setText(it)
+    private val contentLuncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            result.data?.extras?.getString("KEY_CHAT")?.let {
+                binding.descriptionText.setText(it)
+            }
         }
-    }
+
+    private val priceLuncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            result.data?.extras?.getString("KEY_CHAT")?.let {
+                binding.priceText.setText(it)
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,22 +67,26 @@ class ProductRegisterActivity : AppCompatActivity() {
 
         supportFragmentManager.setFragmentResultListener("KEY_CONTENT", this) { _, bundle ->
             bundle.getString("KEY")?.let {
-                priceLauncher.launch(Intent(baseContext, ChatActivity::class.java).apply {
-                    putExtra("KEY", "CONTENT")
+                contentLuncher.launch(Intent(baseContext, ChatActivity::class.java).apply {
+                    putExtra("KEY_NAME", it)
                 })
             }
         }
 
         supportFragmentManager.setFragmentResultListener("KEY_PRICE", this) { _, bundle ->
             bundle.getString("KEY")?.let {
-                priceLauncher.launch(Intent(baseContext, ChatActivity::class.java).apply {
-                    putExtra("KEY", "PRICE")
+                priceLuncher.launch(Intent(baseContext, ChatPriceActivity::class.java).apply {
+                    putExtra("KEY_NAME", it)
                 })
             }
         }
 
+        binding.priceChat.setOnClickListener {
+            ProductPriceDialog().show(supportFragmentManager, null)
+        }
+
         binding.helperButton.setOnClickListener {
-            AiSelectDialog().show(supportFragmentManager, null)
+            contentLuncher.launch(Intent(baseContext, ChatActivity::class.java))
         }
 
         binding.addImageButton.setOnClickListener {

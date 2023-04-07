@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.howlab.jarvischatgpt.R
+import com.howlab.jarvischatgpt.databinding.ListItemGroupChatAiBinding
 import com.howlab.jarvischatgpt.databinding.ListItemGroupChatUserMeBinding
 import com.howlab.jarvischatgpt.databinding.ListItemGroupChatUserOtherBinding
 import java.time.LocalDateTime
@@ -38,6 +39,19 @@ data class ChatMessage(val message: String, val time: String, val role: String) 
 
             return ChatMessage(message, time, role = "AI")
         }
+
+        fun gpt(message: String): ChatMessage {
+            val now = LocalDateTime.now()
+            val minute = if (now.minute.toString().length == 2) {
+                now.minute.toString()
+            } else {
+                "0${now.minute}"
+            }
+
+            val time = "${now.hour}:${minute}"
+
+            return ChatMessage(message, time, role = "")
+        }
     }
 }
 
@@ -46,24 +60,34 @@ class ChatAdapter(
 ) : ListAdapter<ChatMessage, ChatViewHolder>(differ) {
 
     override fun getItemViewType(position: Int): Int {
-        return if (getItem(position).role == "USER") R.layout.list_item_group_chat_user_me
-        else R.layout.list_item_group_chat_user_other
+        return when (getItem(position).role) {
+            "USER" -> R.layout.list_item_group_chat_user_me
+            "AI" -> R.layout.list_item_group_chat_user_other
+            else -> R.layout.list_item_group_chat_ai
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
-        return if (viewType == R.layout.list_item_group_chat_user_me) {
-            ChatViewHolder.UserViewHolder(
-                ListItemGroupChatUserMeBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent, false
-                ), onClick
-            )
-        } else {
-            ChatViewHolder.AiViewHolder(
+        return when (viewType) {
+            R.layout.list_item_group_chat_user_me -> {
+                ChatViewHolder.UserViewHolder(
+                    ListItemGroupChatUserMeBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent, false
+                    ), onClick
+                )
+            }
+            R.layout.list_item_group_chat_user_other -> ChatViewHolder.AiViewHolder(
                 ListItemGroupChatUserOtherBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent, false
                 ), onClick
+            )
+            else -> ChatViewHolder.GptViewHolder(
+                ListItemGroupChatAiBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent, false
+                )
             )
         }
     }
@@ -77,6 +101,11 @@ class ChatAdapter(
         }
 
         if (holder is ChatViewHolder.AiViewHolder) {
+            holder.bind(item)
+            return
+        }
+
+        if (holder is ChatViewHolder.GptViewHolder) {
             holder.bind(item)
         }
     }
@@ -117,8 +146,7 @@ sealed class ChatViewHolder(
     class AiViewHolder(
         private val binding: ListItemGroupChatUserOtherBinding,
         val onClick: (ChatMessage) -> Unit
-    ) :
-        ChatViewHolder(binding) {
+    ) : ChatViewHolder(binding) {
 
         fun bind(chat: ChatMessage) {
             binding.textGroupChatMessage.text = chat.message
@@ -127,6 +155,16 @@ sealed class ChatViewHolder(
             binding.root.setOnClickListener {
                 onClick.invoke(chat)
             }
+        }
+    }
+
+    class GptViewHolder(
+        private val binding: ListItemGroupChatAiBinding
+    ) : ChatViewHolder(binding) {
+
+        fun bind(chat: ChatMessage) {
+            binding.textGroupChatMessage.text = chat.message
+            binding.textGroupChatTime.text = chat.time
         }
     }
 }

@@ -1,11 +1,13 @@
 package com.howlab.jarvischatgpt.network
 
+import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import java.util.concurrent.TimeUnit
 
 data class CompletionResponse(
     val choices: List<Choice>,
@@ -14,6 +16,12 @@ data class CompletionResponse(
 )
 
 data class Choice(val text: String)
+
+data class History(
+    val date: String = "",
+    val name: String = "",
+    val price: Int = 0
+)
 
 data class ChatRequest(
 //    val model: String = "text-davinci-003",
@@ -31,17 +39,29 @@ interface OpenAiApi {
 
     @Headers("Authorization: Bearer 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")
     @POST("api/generate_form")
-    fun getCompletion(@Body requestBody: ChatRequest): Call<CompletionResponse>
+    fun getCompletionForm(@Body requestBody: ChatRequest): Call<CompletionResponse>
+
+    @Headers("Authorization: Bearer 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")
+    @POST("api/generate")
+    fun getCompletionPrice(@Body requestBody: ChatRequest): Call<CompletionResponse>
 
     companion object {
 
         private var instance: OpenAiApi? = null
+        private const val TIMEOUT_TIME = 20L
 
         fun getInstance(): OpenAiApi {
             if (instance == null) {
+                val okHttpClient = OkHttpClient.Builder()
+                    .connectTimeout(TIMEOUT_TIME, TimeUnit.SECONDS)
+                    .readTimeout(TIMEOUT_TIME, TimeUnit.SECONDS)
+                    .writeTimeout(TIMEOUT_TIME, TimeUnit.SECONDS)
+                    .build()
+
                 return Retrofit.Builder()
                     .baseUrl("http://43.200.49.199:3000/")
                     .addConverterFactory(GsonConverterFactory.create())
+                    .client(okHttpClient)
                     .build()
                     .create(OpenAiApi::class.java)
             }

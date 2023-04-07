@@ -55,37 +55,60 @@
                         android:layout_marginTop="16dp"
                         android:hint="글 제목" />
 
-                    <EditText
-                        android:id="@+id/priceText"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="16dp"
-                        android:hint="가격을 입력해주세요."
-                        android:inputType="number" />
+                        android:orientation="horizontal">
 
-                    <EditText
-                        android:id="@+id/descriptionText"
+                        <EditText
+                            android:id="@+id/priceText"
+                            android:layout_width="300dp"
+                            android:layout_height="60dp"
+                            android:layout_centerVertical="true"
+                            android:hint="가격을 입력해주세요."
+                            android:inputType="number" />
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/priceChat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="16dp"
+                            android:backgroundTint="#ccff00"
+                            android:src="@drawable/live_chat" />
+                    </RelativeLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="top"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginTop="16dp"
-                        android:hint="게시글 내용을 작성해주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)"
-                        android:minHeight="150dp" />
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/descriptionText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="16dp"
+                            android:gravity="top"
+                            android:hint="게시글 내용을 작성해주세요. (판매 금지 물품은 게시가 제한될 수 있어요.)"
+                            android:minHeight="150dp"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/helperButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="15dp"
+                            android:backgroundTint="#ccff00"
+                            android:src="@drawable/live_chat"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/descriptionText" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/helperButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:backgroundTint="#ccff00"
-            android:src="@drawable/live_chat"
-            app:layout_constraintBottom_toTopOf="@id/productAdd"
-            app:layout_constraintEnd_toEndOf="@id/productAdd" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/productAdd"

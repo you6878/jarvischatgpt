@@ -45,14 +45,6 @@ class ChatActivity : AppCompatActivity() {
 
     private val chats = mutableListOf<ChatMessage>()
 
-    private val state by lazy {
-        when (intent.extras?.getString("KEY")) {
-            "PRICE" -> AiState.PRICE
-            "CONTENT" -> AiState.CONTENT
-            else -> AiState.CONTENT
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -90,52 +82,25 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun apiRequest() {
-        when (state) {
-            AiState.PRICE -> {
-                api.getCompletion2(ChatRequest(binding.edittextGroupChatMessage.text.toString()))
-                    .enqueue(object : Callback<CompletionResponse> {
-                        override fun onResponse(
-                            call: Call<CompletionResponse>,
-                            response: Response<CompletionResponse>
-                        ) {
-                            if (response.isSuccessful) {
-                                chats.add(ChatMessage.ai(response.body()?.result.orEmpty()))
-                                chatAdapter.submitList(chats.toMutableList())
-                            } else {
-                                chats.add(ChatMessage.ai("실패했습니다."))
-                                chatAdapter.submitList(chats.toMutableList())
-                            }
-                        }
+        api.getCompletionForm(ChatRequest(binding.edittextGroupChatMessage.text.toString()))
+            .enqueue(object : Callback<CompletionResponse> {
+                override fun onResponse(
+                    call: Call<CompletionResponse>,
+                    response: Response<CompletionResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        chats.add(ChatMessage.gpt(response.body()?.result.orEmpty()))
+                        chatAdapter.submitList(chats.toMutableList())
+                    } else {
+                        chats.add(ChatMessage.gpt("실패했습니다."))
+                        chatAdapter.submitList(chats.toMutableList())
+                    }
+                }
 
-                        override fun onFailure(call: Call<CompletionResponse>, t: Throwable) {
-                            chats.add(ChatMessage.ai("실패했습니다."))
-                            chatAdapter.submitList(chats.toMutableList())
-                        }
-                    })
-            }
-            AiState.CONTENT -> {
-                api.getCompletion(ChatRequest(binding.edittextGroupChatMessage.text.toString()))
-                    .enqueue(object : Callback<CompletionResponse> {
-                        override fun onResponse(
-                            call: Call<CompletionResponse>,
-                            response: Response<CompletionResponse>
-                        ) {
-                            // api 요청
-                            if (response.isSuccessful) {
-                                chats.add(ChatMessage.ai(response.body()?.result.orEmpty()))
-                                chatAdapter.submitList(chats.toMutableList())
-                            } else {
-                                chats.add(ChatMessage.ai("실패했습니다."))
-                                chatAdapter.submitList(chats.toMutableList())
-                            }
-                        }
-
-                        override fun onFailure(call: Call<CompletionResponse>, t: Throwable) {
-                            chats.add(ChatMessage.ai("실패했습니다."))
-                            chatAdapter.submitList(chats.toMutableList())
-                        }
-                    })
-            }
-        }
+                override fun onFailure(call: Call<CompletionResponse>, t: Throwable) {
+                    chats.add(ChatMessage.gpt("실패했습니다."))
+                    chatAdapter.submitList(chats.toMutableList())
+                }
+            })
     }
 }

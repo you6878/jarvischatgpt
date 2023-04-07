@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp">
+
+        <TextView
+            android:id="@+id/text_group_chat_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="22dp"
+            android:gravity="center"
+            android:text="February 22nd"
+            android:textColor="@color/text_color_text_2"
+            android:textSize="12dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/image_group_chat_profile"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_below="@id/text_group_chat_date"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/text_group_chat_nickname"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_alignTop="@id/image_group_chat_profile"
+            android:layout_toRightOf="@id/image_group_chat_profile"
+            android:background="@drawable/gpt"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/group_chat_message_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_below="@+id/text_group_chat_date"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GPT"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/text_group_chat_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/zone_recieve_bg"
+                android:maxWidth="260dp"
+                android:paddingVertical="8dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:text="message"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/text_group_chat_edited"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:text="(edited)"
+                android:textColor="#828282"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="8dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_group_chat_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/text_group_chat_date"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="4dp"
+            android:text="21:27"
+            android:textColor="#8e8e8e"
+            android:textSize="10dp" />
+    </LinearLayout>
+</layout>

@@ -1,11 +1,9 @@
-package com.howlab.jarvischatgpt
+package com.howlab.jarvischatgpt.chat
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import com.howlab.jarvischatgpt.chat.ChatAdapter
-import com.howlab.jarvischatgpt.chat.ChatMessage
 import com.howlab.jarvischatgpt.databinding.ActivityUserChatBinding
 import com.howlab.jarvischatgpt.network.ChatRequest
 import com.howlab.jarvischatgpt.network.CompletionResponse
@@ -74,7 +72,7 @@ class UserChatActivity : AppCompatActivity() {
                 }
 
                 message.contains("네고") -> {
-                    chats.add(ChatMessage.ai("판매하겠습니다!"))
+                    chats.add(ChatMessage.ai("네고는 거절하겠습니다 죄송합니다 ㅠ"))
                     chatAdapter.submitList(chats.toMutableList())
                 }
             }

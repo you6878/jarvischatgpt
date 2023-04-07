@@ -4,10 +4,10 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.howlab.jarvischatgpt.chat.UserChatActivity
 import com.howlab.jarvischatgpt.databinding.ActivityFeedBinding
 import com.howlab.jarvischatgpt.network.Product
 import kotlinx.coroutines.launch

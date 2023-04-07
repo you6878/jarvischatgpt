@@ -126,15 +126,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="8dp"
-                    app:cardUseCompatPadding="true">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="4dp"
-                        android:text="약속장소 추천" />
-                </androidx.cardview.widget.CardView>
+                    app:cardUseCompatPadding="true"/>
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/mid"
@@ -144,11 +136,12 @@
                     app:cardUseCompatPadding="true">
 
                     <TextView
+                        android:id="@+id/recommend_place_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="8dp"
                         android:paddingVertical="4dp"
-                        android:text="중간거리 추천" />
+                        android:text="약속 시간 및 중간거리 추천" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -159,6 +152,7 @@
                     app:cardUseCompatPadding="true">
 
                     <TextView
+                        android:id="@+id/recommend_near_station"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:paddingHorizontal="8dp"

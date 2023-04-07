@@ -18,7 +18,9 @@ class FeedActivity : AppCompatActivity() {
     private val binding by lazy { ActivityFeedBinding.inflate(layoutInflater) }
 
     private val feedAdapter = FeedAdapter(onClick = {
-
+        startActivity(Intent(baseContext, UserChatActivity::class.java).apply {
+            putExtra("KEY", it.location)
+        })
     })
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +40,9 @@ class FeedActivity : AppCompatActivity() {
             feedAdapter.setProducts(products)
         }
 
-
+        binding.setImage.setOnClickListener {
+            startActivity(Intent(this, MyActivity::class.java))
+        }
 
         binding.fab.setOnClickListener {
             startActivity(Intent(this, ProductRegisterActivity::class.java))

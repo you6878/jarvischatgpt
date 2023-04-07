@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.size.Scale
 import com.howlab.jarvischatgpt.databinding.ItemProductBinding
 import com.howlab.jarvischatgpt.network.Product
+import java.text.DecimalFormat
 import java.text.NumberFormat
 
 class FeedAdapter(
@@ -41,11 +43,14 @@ class FeedAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(product: Product) {
-            binding.thumbnailImage.load(product.thumbnailImage)
+            binding.thumbnailImage.load(product.thumbnailImage) {
+                scale(Scale.FILL)
+            }
 
             binding.productTitleText.text = product.title
             binding.locationTextView.text = product.location
-            binding.productPriceTextView.text = product.price
+
+            binding.productPriceTextView.text = product.price + " 원"
 
             binding.root.setOnClickListener {
                 onClick.invoke(product)

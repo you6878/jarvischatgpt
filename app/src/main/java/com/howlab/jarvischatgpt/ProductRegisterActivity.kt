@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.howlab.jarvischatgpt.chat.ChatActivity
 import com.howlab.jarvischatgpt.databinding.ActivityProductRegisterBinding
 import com.howlab.jarvischatgpt.network.Product
 import com.howlab.jarvischatgpt.network.StorageApi
@@ -22,10 +23,10 @@ class ProductRegisterActivity : AppCompatActivity() {
 
     private val photoListAdapter by lazy { PhotoListAdapter() }
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+    private val firestore = Firebase.firestore
 
-        }
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { }
 
     private val launcher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -37,7 +38,11 @@ class ProductRegisterActivity : AppCompatActivity() {
             photoListAdapter.addImage(galleryUri)
         }
 
-    val firestore = Firebase.firestore
+    private val priceLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        result.data?.extras?.getString("KEY_CHAT")?.let {
+            binding.descriptionText.setText(it)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +54,26 @@ class ProductRegisterActivity : AppCompatActivity() {
             requestPermissionLauncher.launch(android.Manifest.permission.READ_MEDIA_IMAGES)
         } else {
             requestPermissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+        supportFragmentManager.setFragmentResultListener("KEY_CONTENT", this) { _, bundle ->
+            bundle.getString("KEY")?.let {
+                priceLauncher.launch(Intent(baseContext, ChatActivity::class.java).apply {
+                    putExtra("KEY", "CONTENT")
+                })
+            }
+        }
+
+        supportFragmentManager.setFragmentResultListener("KEY_PRICE", this) { _, bundle ->
+            bundle.getString("KEY")?.let {
+                priceLauncher.launch(Intent(baseContext, ChatActivity::class.java).apply {
+                    putExtra("KEY", "PRICE")
+                })
+            }
+        }
+
+        binding.helperButton.setOnClickListener {
+            AiSelectDialog().show(supportFragmentManager, null)
         }
 
         binding.addImageButton.setOnClickListener {
@@ -76,7 +101,6 @@ class ProductRegisterActivity : AppCompatActivity() {
         binding.productAdd.setOnClickListener {
             lifecycleScope.launch {
                 val images = api.uploadImagesAsync(photoListAdapter.items).await()
-
 
                 firestore.collection("PRODUCT")
                     .add(

@@ -24,9 +24,14 @@ data class ChatRequest(
 )
 
 interface OpenAiApi {
+
     @Headers("Authorization: Bearer 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")
     @POST("api/generate")
     fun getCompletion2(@Body requestBody: ChatRequest): Call<CompletionResponse>
+
+    @Headers("Authorization: Bearer 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")
+    @POST("api/generate_form")
+    fun getCompletion(@Body requestBody: ChatRequest): Call<CompletionResponse>
 
     companion object {
 

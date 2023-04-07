@@ -31,6 +31,12 @@ class StationActivity : AppCompatActivity() {
         val subwayAdapter = StationsAdapter {
             val intent = Intent()
             intent.putExtra("KEY_NAME", it.name)
+
+            var line = ""
+            it.connectedSubways.forEach {
+                line += it.label + " "
+            }
+            intent.putExtra("KEY_LINE", line)
             setResult(500, intent)
             finish()
         }

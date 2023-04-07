@@ -17,11 +17,18 @@ class RegisterActivity : AppCompatActivity() {
 
     private val auth = Firebase.auth
 
+    var line = ""
+
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         val station = it.data?.getStringExtra("KEY_NAME")
+        val getline = it.data?.getStringExtra("KEY_LINE")
 
         station?.let {
             binding.selectStation.text = it
+        }
+
+        getline?.let {
+            line = it
         }
     }
 
@@ -44,7 +51,8 @@ class RegisterActivity : AppCompatActivity() {
                         .set(
                             Member(
                                 auth.currentUser?.uid.orEmpty(),
-                                binding.selectStation.text.toString()
+                                binding.selectStation.text.toString(),
+                                line
                             )
                         )
                     Toast.makeText(baseContext, "회원 가입이 완료 되었습니다.", Toast.LENGTH_SHORT).show()

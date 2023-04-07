@@ -41,7 +41,9 @@ data class ChatMessage(val message: String, val time: String, val role: String) 
     }
 }
 
-class ChatAdapter : ListAdapter<ChatMessage, ChatViewHolder>(differ) {
+class ChatAdapter(
+    private val onClick: (ChatMessage) -> Unit
+) : ListAdapter<ChatMessage, ChatViewHolder>(differ) {
 
     override fun getItemViewType(position: Int): Int {
         return if (getItem(position).role == "USER") R.layout.list_item_group_chat_user_me
@@ -54,14 +56,14 @@ class ChatAdapter : ListAdapter<ChatMessage, ChatViewHolder>(differ) {
                 ListItemGroupChatUserMeBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent, false
-                )
+                ), onClick
             )
         } else {
             ChatViewHolder.AiViewHolder(
                 ListItemGroupChatUserOtherBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent, false
-                )
+                ), onClick
             )
         }
     }
@@ -96,22 +98,35 @@ sealed class ChatViewHolder(
     binding: ViewDataBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    class UserViewHolder(private val binding: ListItemGroupChatUserMeBinding) :
+    class UserViewHolder(
+        private val binding: ListItemGroupChatUserMeBinding,
+        val onClick: (ChatMessage) -> Unit
+    ) :
         ChatViewHolder(binding) {
 
         fun bind(chat: ChatMessage) {
             binding.textGroupChatMessage.text = chat.message
             binding.textGroupChatTime.text = chat.time
+
+            binding.root.setOnClickListener {
+                onClick.invoke(chat)
+            }
         }
     }
 
-    class AiViewHolder(private val binding: ListItemGroupChatUserOtherBinding) :
+    class AiViewHolder(
+        private val binding: ListItemGroupChatUserOtherBinding,
+        val onClick: (ChatMessage) -> Unit
+    ) :
         ChatViewHolder(binding) {
 
         fun bind(chat: ChatMessage) {
             binding.textGroupChatMessage.text = chat.message
             binding.textGroupChatTime.text = chat.time
+
+            binding.root.setOnClickListener {
+                onClick.invoke(chat)
+            }
         }
     }
-
 }

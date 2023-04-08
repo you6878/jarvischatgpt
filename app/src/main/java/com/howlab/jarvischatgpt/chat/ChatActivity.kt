@@ -25,7 +25,7 @@ class ChatActivity : AppCompatActivity() {
     private val binding by lazy { ChatmainBinding.inflate(layoutInflater) }
 
     private lateinit var api: OpenAiApi
-
+    private var totalText = ""
     private val chatAdapter by lazy {
         ChatAdapter { chat ->
             val snackbar = Snackbar.make(binding.root, "적용하시겠습니까?", Snackbar.LENGTH_SHORT)
@@ -82,7 +82,15 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun apiRequest() {
-        api.getCompletionForm(ChatRequest(binding.edittextGroupChatMessage.text.toString()))
+        if(totalText.isEmpty()){
+            totalText = binding.edittextGroupChatMessage.text.toString()
+        }else{
+            totalText +=  ", " + binding.edittextGroupChatMessage.text.toString()
+        }
+        println("totalText ${totalText}")
+
+
+        api.getCompletionForm(ChatRequest(totalText))
             .enqueue(object : Callback<CompletionResponse> {
                 override fun onResponse(
                     call: Call<CompletionResponse>,

@@ -17,6 +17,8 @@ import kotlinx.coroutines.tasks.await
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.NumberFormat
+import java.util.*
 
 class ChatPriceActivity : AppCompatActivity() {
 
@@ -110,13 +112,15 @@ class ChatPriceActivity : AppCompatActivity() {
             }
 
             var date = ""
+            var exchangePrice = 0
             history.forEach {
                 val h = it.toObject(History::class.java)
                 date = h.date
+                exchangePrice = h.price
             }
 
-            val input = "$name|$min|$avg|$max|$date"
-
+            val input = "$name|${formatWithComma(min)}|${formatWithComma(avg)}|${formatWithComma(max)}|${exchangePrice}|$date"
+            println("input ${input}")
             api.getCompletionPrice(ChatRequest(input))
                 .enqueue(object : Callback<CompletionResponse> {
                     override fun onResponse(
@@ -141,4 +145,9 @@ class ChatPriceActivity : AppCompatActivity() {
 
         }
     }
+    fun formatWithComma(number: Int): String {
+        val formatter = NumberFormat.getNumberInstance(Locale.US)
+        return formatter.format(number)
+    }
+
 }

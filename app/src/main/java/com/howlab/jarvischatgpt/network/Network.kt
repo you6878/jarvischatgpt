@@ -61,7 +61,7 @@ interface OpenAiApi {
     companion object {
 
         private var instance: OpenAiApi? = null
-        private const val TIMEOUT_TIME = 40L
+        private const val TIMEOUT_TIME = 60L
 
         fun getInstance(): OpenAiApi {
             if (instance == null) {

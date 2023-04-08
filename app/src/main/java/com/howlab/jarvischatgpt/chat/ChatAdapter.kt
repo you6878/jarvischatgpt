@@ -87,7 +87,7 @@ class ChatAdapter(
                 ListItemGroupChatAiBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent, false
-                )
+                ),onClick
             )
         }
     }
@@ -159,12 +159,17 @@ sealed class ChatViewHolder(
     }
 
     class GptViewHolder(
-        private val binding: ListItemGroupChatAiBinding
+        private val binding: ListItemGroupChatAiBinding,
+        val onClick: (ChatMessage) -> Unit
     ) : ChatViewHolder(binding) {
 
         fun bind(chat: ChatMessage) {
             binding.textGroupChatMessage.text = chat.message
             binding.textGroupChatTime.text = chat.time
+
+            binding.root.setOnClickListener {
+                onClick.invoke(chat)
+            }
         }
     }
 }

@@ -11,8 +11,8 @@
             android:id="@+id/dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="제품명을 입력해주세요."
-            android:textSize="24sp"
+            android:text="GPT에게 중고가격을 알고 싶은 제품명을 입력해주세요."
+            android:textSize="15dp"
             android:textStyle="bold" />
 
         <LinearLayout

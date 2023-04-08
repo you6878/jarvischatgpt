@@ -39,7 +39,6 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:hint="메세지를 입력해주세요."
-                android:maxLines="1"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
 

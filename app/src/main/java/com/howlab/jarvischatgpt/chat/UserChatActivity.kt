@@ -111,7 +111,7 @@ class UserChatActivity : AppCompatActivity() {
         binding.recommendPlaceTime.setOnClickListener {
             //나는 4월 7일, 4월9일 상대방은 4월 9일 4월 11일 거래 만남가능한 공통된 날짜만 말해주고 공통되지 않는 날짜는 생략하고 2호선 강남역 2호선 잠실역 중간에 있는 지하철역을 알려주는데 여기서 만나야되는 이유를 100자 내외로 설명해줘
             val command =
-                "나는 $meDay 상대방은 $otherDay 거래 만남가능한 공통된 날짜만 말해주고 공통되지 않는 날짜는 생략하고 ${mePlace}이랑 $otherPlace 중간에 있는 지하철역을 알려주는데 여기서 만나야되는 이유를 100자 내외로 설명해줘"
+                "나는 $meDay 상대방은 $otherDay 만남가능한 공통된 날짜만 말해주고 공통되지 않는 날짜는 생략하고 ${mePlace}이랑 $otherPlace 중간에 있는 지하철역을 알려주는데 여기서 만나야되는 이유를 100자 내외로 설명해줘"
 
             val stationMent = "${mePlace}과 $otherPlace 중간지점 지하철역 알려줘"
             apiRequestStation(stationMent)
@@ -131,12 +131,12 @@ class UserChatActivity : AppCompatActivity() {
                 }
 
                 message.contains("구매") -> {
-                    chats.add(ChatMessage.ai("판매하겠습니다!"))
+                    chats.add(ChatMessage.ai("제가 강남 사는데 판매하겠습니다!"))
                     chatAdapter.submitList(chats.toMutableList())
                 }
 
-                message.contains("네고") -> {
-                    chats.add(ChatMessage.ai("네고는 거절하겠습니다 죄송합니다 ㅠ"))
+                message.contains("선릉역 거래") -> {
+                    chats.add(ChatMessage.ai("옙 1번 출구 스타벅스에서 뵙도록 하겠습니다."))
                     chatAdapter.submitList(chats.toMutableList())
                 }
             }
@@ -155,7 +155,7 @@ class UserChatActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val first = response.body()?.result?.content.orEmpty()
 
-                        val dayMent = "나는 $meDay 상대방은 $otherDay 거래 만남가능한 공통된 날짜만 말해줘"
+                        val dayMent = "나는 $meDay 상대방은 $otherDay 거래 만남가능한 공통된 날짜를 말해줘"
 
                         api.getCompletionNearStation(ChatRequest(dayMent))
                             .enqueue(object : Callback<ChatRes> {

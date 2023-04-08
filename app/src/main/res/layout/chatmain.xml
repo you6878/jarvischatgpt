@@ -39,7 +39,6 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:hint="메세지를 입력해주세요."
-                android:maxLines="1"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
 
@@ -126,7 +125,7 @@
                 android:gravity="center"
                 android:paddingHorizontal="6dp"
                 android:paddingVertical="4dp"
-                android:text="물품 정보를 입력해주세요.\nEx: 물품은 아이폰 12, 사용기간은 4년, 상태는 C급에 보호필름이 부착되어있어 판매가격은 25000이야 구성품은 USB C 케이블 포함\n- Ai답변을 클릭하면 작성글에 적용할 수 있습니다."
+                android:text="물품 정보를 입력해주세요.\nEx: 물품명은 아이폰 12, 사용기간은 4년, 상태는 C급에 보호필름이 부착되어있어 판매가격은 80만원, 구성품은 USB C 케이블 포함\n- Ai답변을 클릭하면 작성글에 적용할 수 있습니다."
                 android:textSize="12dp" />
 
             <androidx.recyclerview.widget.RecyclerView
